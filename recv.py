@@ -2,7 +2,8 @@ import socket
 import struct
 
 # Multicast group address and port
-MCAST_GRP = 'ff02::1'
+#MCAST_GRP = 'ff02::1'
+MCAST_GRP = 'ff3e::18db:2024'
 MCAST_PORT = 12345
 
 # Create a socket for IPv6 with UDP
