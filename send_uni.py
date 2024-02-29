@@ -1,7 +1,7 @@
 import socket
 
 # The receiver's IPv6 address and port
-HOST = 'your:ipv6:address::here'  # Replace with the receiver's actual IPv6 address
+HOST = '240b:10:2f60:18ff:1c1f:eefb:9cbc:d2a6'  # Replace with the receiver's actual IPv6 address
 PORT = 12345
 
 # Create a socket for IPv6 with TCP

@@ -1,30 +1,23 @@
 import socket
 import struct
 
-# IPv6 multicast address, port, and scope ID
-MCAST_GRP = 'ff02::1%en0'  # Adjust 'eth0' as necessary
+# Multicast group address and port
+MCAST_GRP = 'ff02::1'
 MCAST_PORT = 12345
 
-# Create a socket
-sock = socket.socket(socket.AF_INET6, socket.SOCK_DGRAM)
+# Create a socket for IPv6 with UDP
+sock = socket.socket(socket.AF_INET6, socket.SOCK_DGRAM, socket.IPPROTO_UDP)
 
-# Set the time-to-live for messages to 1
-ttl_bin = struct.pack('@i', 1)
-sock.setsockopt(socket.IPPROTO_IPV6, socket.IPV6_MULTICAST_HOPS, ttl_bin)
+# Set the time-to-live for messages to 1 so they do not go beyond the local network
+ttl = struct.pack('b', 1)
+sock.setsockopt(socket.IPPROTO_IPV6, socket.IPV6_MULTICAST_HOPS, ttl)
 
-# Resolve the address and scope ID
-addrinfo = socket.getaddrinfo(MCAST_GRP.split('%')[0], None)[0]
-send_addr = addrinfo[4][0], MCAST_PORT
-
-# Message to be sent
-message = 'Hello, Multicast!'.encode('utf-8')
-
+message = 'Hello, Multicast!'
 try:
     # Send message to the multicast group
-    print(f"Sending message to the multicast group: {MCAST_GRP} {send_addr}")
-    sent = sock.sendto(message, send_addr)
+    print(f"Sending message to the multicast group: {MCAST_GRP}")
+    sock.sendto(message.encode(), (MCAST_GRP, MCAST_PORT))
 finally:
-    print("Closing the socket")
     sock.close()
 
 print("Message sent")
